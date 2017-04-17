@@ -15,7 +15,9 @@ import java.util.ArrayList;
 public class MyDataHandler extends DefaultHandler {
     boolean isTitle = false;
     boolean inItem = false;
+    boolean isLink = false;
     public ArrayList<String> titles = new ArrayList<>();
+    public ArrayList<String> links = new ArrayList<>();
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes);
@@ -26,6 +28,10 @@ public class MyDataHandler extends DefaultHandler {
         if (qName.equals("item"))
         {
             inItem = true;
+        }
+        if (qName.equals("link"))
+        {
+            isLink = true;
         }
     }
 
@@ -40,7 +46,10 @@ public class MyDataHandler extends DefaultHandler {
         {
             inItem = false;
         }
-
+        if (qName.equals("link"))
+        {
+            isLink = false;
+        }
     }
 
     @Override
@@ -50,6 +59,12 @@ public class MyDataHandler extends DefaultHandler {
         {
             String str = new String(ch).substring(start, length);
             titles.add(str);
+            Log.d("TITLE", str);
+        }
+        if (isLink && inItem)
+        {
+            String str = new String(ch).substring(start, length);
+            links.add(str);
             Log.d("TITLE", str);
         }
     }
